@@ -2,5 +2,19 @@
     --primary-color:#009900;
     --secondary-color:#ffcc33;
     --ancient-color:#202020;
-    --secondary-color:#ffcc33;
+    --paragraph:#333333;
+}
+
+body{
+    color: var(--ancient-color);
+}
+
+p{
+    color: (var(--paragraph));
+}
+
+.container
+{
+    width: 86%;
+    margin: auto;
 }
