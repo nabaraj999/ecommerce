@@ -10,7 +10,8 @@
 </head>
 
 <body>
-  
+    @include('sweetalert::alert')
+
     <x-frontend-navbar />
 
     <main>

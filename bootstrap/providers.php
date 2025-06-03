@@ -5,5 +5,4 @@ return [
     App\Providers\Filament\AdminPanelProvider::class,
     App\Providers\Filament\ShopPanelProvider::class,
     RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-
 ];

@@ -26,6 +26,8 @@ class ShopPanelProvider extends PanelProvider
             ->id('shop')
             ->path('shop')
             ->login()
+            ->passwordReset()
+            ->profile()
             ->authGuard('vendors')
              ->registration()
             ->colors([

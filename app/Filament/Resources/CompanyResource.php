@@ -25,7 +25,7 @@ class CompanyResource extends Resource
 
     public static function canCreate(): bool
     {
-        return Company::count() == 0 ? true : false;
+        return false;
     }
 
     public static function form(Form $form): Form
