@@ -28,8 +28,7 @@ class ShopPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->profile()
-            ->authGuard('vendors')
-             ->registration()
+            ->authGuard('vendor')
             ->colors([
                 'primary' => Color::Amber,
             ])

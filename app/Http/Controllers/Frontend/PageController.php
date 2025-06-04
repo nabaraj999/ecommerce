@@ -15,7 +15,8 @@ class PageController extends BaseController
 {
     public function home()
     {
-        return view('frontend.home');
+        $vendors = Vendor::where("status","approved")->where('expire_date',">", now())->get();
+        return view('frontend.home',compact("vendors"));
     }
 
     public function vendor_request(Request $request)

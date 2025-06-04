@@ -1,20 +1,22 @@
-:root{
-    --primary-color:#009900;
-    --secondary-color:#ffcc33;
-    --ancient-color:#202020;
-    --paragraph:#333333;
+:root {
+    --primary-color: #009900;
+    --secondary-color: #ffcc33;
+    --ancient-color: #202020;
+    --paragraph: #333333;
 }
 
-body{
-    color: var(--ancient-color);
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--paragraph);
+    background-color: #f9f9f9;
 }
 
-p{
-    color: (var(--paragraph));
+p {
+    color: var(--paragraph);
+    font-size: 14px;
 }
 
-.container
-{
+.container {
     width: 86%;
     margin: auto;
 }

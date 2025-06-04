@@ -25,7 +25,7 @@ class VendorObserver
 
        if($vendor->isDirty('status') && $vendor->status == 'approved'){
       //  dd($vendor);
-          $password = rand(11111, 99999);
+          $password= 123456;
            $vendor->password=Hash::make($password);
            $vendor->saveQuietly();
          Mail::to($vendor->email)->send(new VendorApprovelNotification($vendor, $password));
