@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VendorRequestNotification;
 use App\Http\Controllers\Frontend\BaseController;
+use App\Models\Product;
 
 class PageController extends BaseController
 {
@@ -40,4 +41,39 @@ class PageController extends BaseController
         toast("Your request has been successfull submitted!", "success");
         return redirect()->back();
     }
+
+     public function shop($id)
+    {
+        $vendor = Vendor::where("status","approved")->where('id', $id)->first();
+        if(!$vendor){
+            return view('404');
+        }
+        $products=$vendor->products()->where('status',true)->get();
+        return view('frontend.vendor',compact("vendor","products"));
+    }
+
+     public function product($id)
+    {
+        $product = Product::where("status", true)->where('id', $id)->first();
+        if (!$product) {
+            return view('404');
+        }
+        return view('frontend.product', compact( "product"));
+    }
+
+
+     public function compare(Request $request)
+    {
+        $q = $request->q;
+        $min = $request->min;
+        $max = $request->max;
+        if (!$min && !$max) {
+            $products = Product::where('name', "like", "%$q%")->orderBy("price", "asc")->get();
+            return view('frontend.compare', compact("products", "q"));
+        }
+
+        $products = Product::where('name', "like", "%$q%")->orderBy("price", "asc")->whereBetween('price', [$min, $max])->get();
+        return view('frontend.compare', compact("products", "q", "min", "max"));
+    }
+
 }
