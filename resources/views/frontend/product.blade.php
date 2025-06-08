@@ -125,13 +125,17 @@
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <button
-                                type="button"
-                                class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                            >
-                                <i class="fas fa-shopping-cart"></i>
-                                Add to Cart
+
+                            <form action="{{ route('add_to_cart') }}" method="post">
+                            @csrf
+                            <input type = "number" name="qty" min = "1" max="10" value = "1">
+                            <input type = "number" name="product_id" min = "1" max="10"
+                                value = "{{ $product->id }}" hidden>
+                            <button type = "submit" class = "btn">
+                                Add to Cart <i class = "fas fa-shopping-cart"></i>
                             </button>
+                            <button type = "button" class = "btn">Compare</button>
+                        </form>
 
                             <button
                                 type="button"

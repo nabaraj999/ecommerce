@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class VendorObserver
 {
+
     /**
      * Handle the Vendor "created" event.
      */
@@ -17,19 +18,22 @@ class VendorObserver
         //
     }
 
+
+     public function saving (Vendor $vendor): void
+    {
+        $vendor->date ="helll";
+    }
     /**
      * Handle the Vendor "updated" event.
      */
     public function updated(Vendor $vendor): void
     {
-
-       if($vendor->isDirty('status') && $vendor->status == 'approved'){
-      //  dd($vendor);
-          $password= 123456;
-           $vendor->password=Hash::make($password);
-           $vendor->saveQuietly();
-         Mail::to($vendor->email)->send(new VendorApprovelNotification($vendor, $password));
-       }
+        if ($vendor->isDirty( 'status') && $vendor->status == 'approved') {
+            $password = rand(11111, 99999);
+            $vendor->password = Hash::make($password);
+            $vendor->saveQuietly();
+            Mail::to($vendor->email)->send(new VendorApprovelNotification($vendor, $password));
+        }
     }
 
     /**

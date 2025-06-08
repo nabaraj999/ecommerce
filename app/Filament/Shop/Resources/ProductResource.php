@@ -44,6 +44,10 @@ class ProductResource extends Resource
                     ->required()
                      ->numeric()
                    ->prefix('NRs.'),
+
+                Forms\Components\TextInput::make('qty')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('discount')
                     ->required()
                     ->numeric()
@@ -75,6 +79,9 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->prefix("NRs.")
                     ->searchable(),
+                     Tables\Columns\TextColumn::make('qty')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('discount')
                     ->suffix("%")
                     ->numeric()

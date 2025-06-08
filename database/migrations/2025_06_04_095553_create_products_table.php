@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('brand');
             $table->json('images');
             $table->longText('description');
+             $table->integer('qty');
             $table->boolean('status')->default(true);
              $table->foreignId("vendor_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
