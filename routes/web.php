@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\GoogleLoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\UserController;
@@ -20,6 +21,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/add-to-cart", [UserController::class, 'add_to_cart'])->name('add_to_cart');
     Route::get("/carts", [UserController::class, 'carts'])->name('carts');
 });
+
+
+// login with google
+// Login with google
+Route::get('/google/redirect', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
  Route::fallback (function (){
     return view('404');

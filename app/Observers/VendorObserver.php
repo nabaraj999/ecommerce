@@ -19,10 +19,10 @@ class VendorObserver
     }
 
 
-     public function saving (Vendor $vendor): void
-    {
-        $vendor->date ="helll";
-    }
+    //  public function saving (Vendor $vendor): void
+    // {
+    //     $vendor->date ="helll";
+    // }
     /**
      * Handle the Vendor "updated" event.
      */

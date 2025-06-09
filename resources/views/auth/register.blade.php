@@ -24,6 +24,11 @@
 
             <!-- Register Title -->
             <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-600 to-teal-600 rounded-full mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                </div>
                 <h2 class="text-xl font-bold text-gray-800">Create Account</h2>
                 <p class="text-gray-600 mt-1 text-sm">Join us today and get started</p>
             </div>
@@ -158,6 +163,23 @@
                 </svg>
                 Create Account
             </button>
+
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                </div>
+            </div>
+
+            <!-- Google Signup Button -->
+            <a href="{{ route('google.redirect') }}"
+               class="w-full flex items-center justify-center px-4 py-2.5 border-2 border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 hover:shadow-md group">
+                <img class="w-5 h-5 mr-3" src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+                <span class="font-medium text-sm">Sign up with Google</span>
+            </a>
         </form>
 
         <!-- Footer Links -->
