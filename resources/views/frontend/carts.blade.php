@@ -36,7 +36,8 @@
                         </table>
 
                         <div class="text-right mt-2">
-                            <button class="bg-[var(--primary-color)] py-1 px-3 rounded text-white">Order</button>
+                            <a href="{{ route('checkout', $vendor->id) }}"
+                                class="bg-[var(--primary-color)] py-1 px-3 rounded text-white">Order</a>
                         </div>
                     </div>
                 @endforeach

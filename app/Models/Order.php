@@ -6,24 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Product extends Model
+class Order extends Model
 {
-
-    protected $casts = [
-        "images" => "array",
-        "categories" => "array",
-    ];
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
     }
 
-    public function carts(): HasMany
+    public function available_address(): BelongsTo
     {
-        return $this->hasMany(Cart::class);
+        return $this->belongsTo(AvailableAddress::class);
     }
-
 
     public function order_descriptions(): HasMany
     {
