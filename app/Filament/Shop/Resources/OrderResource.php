@@ -108,7 +108,7 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                 Tables\Actions\DeleteAction::make(),
                 Action::make("Details")
                     ->url(fn($record) => route('detail', $record), shouldOpenInNewTab: true)
             ])

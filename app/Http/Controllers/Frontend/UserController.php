@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends BaseController
@@ -95,7 +97,6 @@ class UserController extends BaseController
             ->with('product.vendor')
             ->get();
 
-
         $order = new Order();
         $order->user_id = Auth::user()->id;
         $order->vendor_id = $id;
@@ -105,17 +106,48 @@ class UserController extends BaseController
         $order->contact = $request->contact;
         $order->total_amount = $vendorCarts->sum('amount');
         $order->save();
-
+        $products = [];
         foreach ($vendorCarts as $key => $cart) {
             $od = new OrderDescription();
             $od->product_id = $cart->product_id;
             $od->order_id = $order->id;
             $od->qty = $cart->qty;
             $od->amount = $cart->amount;
+            $products[] = $cart->product->name;
+            $cart->delete();
             $od->save();
         }
+        if ($request->payment == "khalti") {
+            Cookie::queue("orderId", $order->id);
 
-         Mail::to($vendor)->send(new OrderNotification($order));
+            $response = Http::withHeaders([
+                "Authorization" => "Key " . env('KHALTI_SECRET_KEY')
+            ])->post(env('KHALTI_BASE_URL') . "/epayment/initiate/", [
+                "return_url" => env("KHALTI_RETURN_URL"),
+                "website_url" => env("APP_URL"),
+                "amount" => $order->total_amount * 100,
+                "purchase_order_id" => $order->id,
+                "purchase_order_name" => $products[0],
+                "customer_info" => Auth::user(),
+            ]);
+
+            return redirect($response['payment_url']);
+        }
+        // Mail::to($vendor)->send(new OrderNotification($order));
         return redirect()->back();
+    }
+
+    public function khalti(Request $request)
+    {
+        $response = Http::withHeaders([
+            "Authorization" => "Key " . env('KHALTI_SECRET_KEY')
+        ])->post(env('KHALTI_BASE_URL') . "/epayment/lookup/", [
+            "pidx" => $request->pidx,
+        ]);
+        $orderId = Cookie::get("orderId");
+        $order = Order::find($orderId);
+        $order->payment_status = $response['status'];
+        $order->save();
+        return redirect('/');
     }
 }

@@ -1,4 +1,3 @@
-
 <x-frontend-layout>
     <section>
         <div class="container py-10">

@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/google/redirect', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
+//add
 
 
 Route::get("/detail/{record}", function($record){
