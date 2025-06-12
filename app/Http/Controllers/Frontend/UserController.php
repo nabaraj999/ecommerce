@@ -133,7 +133,7 @@ class UserController extends BaseController
 
             return redirect($response['payment_url']);
         }
-        // Mail::to($vendor)->send(new OrderNotification($order));
+         Mail::to($vendor)->send(new OrderNotification($order));
         return redirect()->back();
     }
 

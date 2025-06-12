@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/checkout/{id}", [UserController::class, 'checkout'])->name('checkout');
     Route::post("/order_store/{id}", [UserController::class, 'order_store'])->name('order_store');
 
-      Route::get('/khalti', [UserController::class, 'khalti']);
+    Route::get('/khalti', [UserController::class, 'khalti']);
 });
 
 
