@@ -4,6 +4,7 @@ use App\Http\Controllers\Frontend\GoogleLoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\UserController;
+use App\Models\Company;
 use App\Models\Order;
 
 Route::get('/home', function () {
@@ -23,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/carts", [UserController::class, 'carts'])->name('carts');
     Route::get("/checkout/{id}", [UserController::class, 'checkout'])->name('checkout');
     Route::post("/order_store/{id}", [UserController::class, 'order_store'])->name('order_store');
+
+      Route::get('/khalti', [UserController::class, 'khalti']);
 });
 
 

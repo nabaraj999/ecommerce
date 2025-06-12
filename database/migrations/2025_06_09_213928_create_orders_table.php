@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+           $table->id();
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
             $table->foreignId("vendor_id")->constrained()->cascadeOnDelete();
             $table->foreignId("available_address_id")->constrained()->cascadeOnDelete();
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string("contact");
             $table->double("total_amount");
             $table->string("status")->default("pending");
+            $table->string("payment_status")->default("not_paid");
             $table->timestamps();
         });
     }
