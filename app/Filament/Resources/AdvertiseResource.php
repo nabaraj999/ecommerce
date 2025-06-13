@@ -23,12 +23,6 @@ class AdvertiseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->required(),
-                Forms\Components\TextInput::make('redirect_url')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('company_name')
                     ->required()
                     ->maxLength(255),
@@ -36,10 +30,23 @@ class AdvertiseResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('expire_date')
+                    ->minDate(now())
                     ->required(),
-                Forms\Components\TextInput::make('ad_position')
+                Forms\Components\Select::make('ad_position')
+                    ->required()
+                    ->options([
+                        'featured' => 'featured',
+                        'form' => 'form',
+                        'product' => 'product',
+                        'vendor' => 'vendor',
+                    ]),
+                Forms\Components\TextInput::make('redirect_url')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Image (120x1200)')
+                    ->image()
+                    ->required(),
             ]);
     }
 
@@ -93,7 +100,7 @@ class AdvertiseResource extends Resource
         return [
             'index' => Pages\ListAdvertises::route('/'),
             'create' => Pages\CreateAdvertise::route('/create'),
-            'edit' => Pages\EditAdvertise::route('/{record}/edit'),
+            // 'edit' => Pages\EditAdvertise::route('/{record}/edit'),
         ];
     }
 }
