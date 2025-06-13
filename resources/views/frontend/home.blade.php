@@ -37,17 +37,163 @@
     </section>
 
     {{-- Advertisement Section --}}
-    <section class="py-8 bg-white">
+    <section class="py-12 bg-gradient-to-r from-gray-50 to-white">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {{-- Main Banner Advertisement --}}
+            <div class="mb-8">
                 @foreach ($advertises as $advertise)
-                    @if ($advertise->ad_position == 'featured')
-                        <div class="group">
+                    @if ($advertise->ad_position == 'hero_banner')
+                        <div class="relative group">
                             <a href="{{ $advertise->redirect_url }}" target="_blank" class="block">
-                                <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-                                    <img class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+                                <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                                    <img class="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                                         src="{{ asset(Storage::url($advertise->image)) }}"
-                                        alt="Advertisement">
+                                        alt="{{ $advertise->title ?? 'Premium Advertisement' }}">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-secondary text-ancient px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                                            🎯 Sponsored
+                                        </span>
+                                    </div>
+                                    @if($advertise->title)
+                                        <div class="absolute bottom-6 left-6 right-6">
+                                            <h3 class="text-white text-2xl font-bold mb-2">{{ $advertise->title }}</h3>
+                                            @if($advertise->description)
+                                                <p class="text-white/90 text-sm">{{ Str::limit($advertise->description, 100) }}</p>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            </a>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+
+            {{-- Featured Advertisements Grid --}}
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-ancient">Featured Promotions</h3>
+                    <span class="text-sm text-paragraph bg-gray-100 px-3 py-1 rounded-full">Limited Time Offers</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach ($advertises as $advertise)
+                        @if ($advertise->ad_position == 'featured')
+                            <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                                <a href="{{ $advertise->redirect_url }}" target="_blank" class="block">
+                                    <div class="relative">
+                                        <img class="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-500 filter group-hover:brightness-110"
+                                            src="{{ asset(Storage::url($advertise->image)) }}"
+                                            alt="{{ $advertise->title ?? 'Featured Advertisement' }}">
+
+                                        {{-- Advertisement Type Badge --}}
+                                        <div class="absolute top-3 left-3">
+                                            @if($advertise->ad_type == 'food')
+                                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                    🍽️ Food & Dining
+                                                </span>
+                                            @elseif($advertise->ad_type == 'shopping')
+                                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                    🛍️ Shopping
+                                                </span>
+                                            @elseif($advertise->ad_type == 'service')
+                                                <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                    ⚡ Services
+                                                </span>
+                                            @else
+                                                <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                    ⭐ Featured
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        {{-- Discount Badge --}}
+                                        @if($advertise->discount_percentage)
+                                            <div class="absolute top-3 right-3">
+                                                <span class="bg-secondary text-ancient px-3 py-1 rounded-full text-sm font-bold shadow-lg animate-pulse">
+                                                    {{ $advertise->discount_percentage }}% OFF
+                                                </span>
+                                            </div>
+                                        @endif
+
+                                        {{-- Overlay for better text readability --}}
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    </div>
+
+                                    <div class="p-5">
+                                        @if($advertise->title)
+                                            <h4 class="font-bold text-lg text-ancient mb-2 group-hover:text-primary transition-colors duration-300">
+                                                {{ $advertise->title }}
+                                            </h4>
+                                        @endif
+
+                                        @if($advertise->description)
+                                            <p class="text-paragraph text-sm mb-3 line-clamp-2">
+                                                {{ Str::limit($advertise->description, 80) }}
+                                            </p>
+                                        @endif
+
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                @if($advertise->location)
+                                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    {{ $advertise->location }}
+                                                @endif
+                                            </div>
+
+                                            <div class="flex items-center text-primary font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
+                                                View Offer
+                                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        {{-- Validity Information --}}
+                                        @if($advertise->valid_until)
+                                            <div class="mt-3 pt-3 border-t border-gray-100">
+                                                <p class="text-xs text-red-600 font-medium flex items-center">
+                                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    Valid until {{ \Carbon\Carbon::parse($advertise->valid_until)->format('M d, Y') }}
+                                                </p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </a>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Sidebar Advertisements --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach ($advertises as $advertise)
+                    @if ($advertise->ad_position == 'sidebar')
+                        <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border-l-4 border-primary">
+                            <a href="{{ $advertise->redirect_url }}" target="_blank" class="flex items-center p-4 group">
+                                <div class="flex-shrink-0 mr-4">
+                                    <img class="w-16 h-16 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
+                                         src="{{ asset(Storage::url($advertise->image)) }}"
+                                         alt="{{ $advertise->title ?? 'Sidebar Advertisement' }}">
+                                </div>
+                                <div class="flex-1">
+                                    @if($advertise->title)
+                                        <h5 class="font-semibold text-ancient group-hover:text-primary transition-colors duration-300">
+                                            {{ $advertise->title }}
+                                        </h5>
+                                    @endif
+                                    @if($advertise->description)
+                                        <p class="text-sm text-paragraph mt-1">
+                                            {{ Str::limit($advertise->description, 60) }}
+                                        </p>
+                                    @endif
+                                    <span class="text-xs text-primary font-medium mt-2 inline-block">Learn More →</span>
                                 </div>
                             </a>
                         </div>
