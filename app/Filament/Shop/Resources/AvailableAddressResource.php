@@ -18,7 +18,7 @@ class AvailableAddressResource extends Resource
 {
     protected static ?string $model = AvailableAddress::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
     public static function getEloquentQuery(): Builder
     {
