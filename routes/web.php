@@ -40,7 +40,13 @@ Route::get("/detail/{record}", function($record){
     return view('order_details', compact('order'));
 })->name('detail');
 
+
+
+
 // 404 fallback
 Route::fallback(function (){
     return view('404');
+
+
+
 });
