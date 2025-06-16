@@ -33,6 +33,17 @@
                 </form>
             </div>
 
+            <!-- Product Button Section -->
+            <div class="flex-shrink-0">
+                <a href="{{ route('products.index') }}"
+                   class="px-6 py-3 bg-white text-[var(--primary-color)] font-semibold text-sm rounded-lg shadow-md hover:shadow-lg hover:bg-gray-50 transition-all duration-200 flex items-center gap-2 border border-white/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    Shop
+                </a>
+            </div>
+
             <!-- User Actions Section -->
             <div class="flex items-center gap-4">
                 @if (!Auth::user())

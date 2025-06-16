@@ -139,4 +139,7 @@ class PageController extends BaseController
 
         return view('frontend.products', compact('products'));
     }
+
+
+
 }
