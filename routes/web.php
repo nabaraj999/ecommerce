@@ -11,38 +11,36 @@ Route::get('/home', function () {
     return redirect()->route('home');
 });
 
-
-
+// Public routes
 Route::get("/",[PageController::class,'home'])->name('home');
 Route::post("/vendor-request", [PageController::class, 'vendor_request'])->name('vendor_request');
-Route::get("/product/{id}", [PageController::class, 'product'])->name('product');
+
+// FIXED: Use consistent route naming
+Route::get("/product/{id}", [PageController::class, 'product'])->name('product.show');
+Route::get("/products", [PageController::class, 'products'])->name('products.index');
 Route::get("/shop/{id}",[PageController::class,'shop'])->name('shop');
 Route::get("/compare", [PageController::class, 'compare'])->name('compare');
 
+// Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::post("/add-to-cart", [UserController::class, 'add_to_cart'])->name('add_to_cart');
     Route::get("/carts", [UserController::class, 'carts'])->name('carts');
     Route::get("/checkout/{id}", [UserController::class, 'checkout'])->name('checkout');
     Route::post("/order_store/{id}", [UserController::class, 'order_store'])->name('order_store');
-
     Route::get('/khalti', [UserController::class, 'khalti']);
 });
 
-
-// login with google
 // Login with google
 Route::get('/google/redirect', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
-//add
-
-
+// Order details
 Route::get("/detail/{record}", function($record){
     $order = Order::find($record);
     return view('order_details', compact('order'));
 })->name('detail');
 
- Route::fallback (function (){
+// 404 fallback
+Route::fallback(function (){
     return view('404');
-
- });
+});

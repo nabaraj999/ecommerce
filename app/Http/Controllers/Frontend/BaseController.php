@@ -25,4 +25,7 @@ class BaseController extends Controller
             "advertises" => $advertises,
         ]);
     }
+
+
+    
 }
