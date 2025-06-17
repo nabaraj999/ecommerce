@@ -17,6 +17,7 @@ Route::post("/vendor-request", [PageController::class, 'vendor_request'])->name(
 
 // FIXED: Use consistent route naming
 Route::get("/product/{id}", [PageController::class, 'product'])->name('product.show');
+
 Route::get("/products", [PageController::class, 'products'])->name('products.index');
 Route::get("/shop/{id}",[PageController::class,'shop'])->name('shop');
 Route::get("/compare", [PageController::class, 'compare'])->name('compare');

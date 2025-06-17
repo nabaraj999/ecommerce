@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use Doctrine\DBAL\Schema\View;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,8 +18,8 @@ class VendorApprovelNotification extends Mailable
      */
     public function __construct($vendor, $password)
     {
-           $this->vendor = $vendor;
-           $this->$password = $password;
+        $this->vendor = $vendor;
+        $this->password = $password;
     }
 
     /**
@@ -38,9 +37,8 @@ class VendorApprovelNotification extends Mailable
      */
     public function content(): Content
     {
-        // dd($this->password);
         return new Content(
-           view:'mail.vendor_approval',
+            view: 'mail.vendor_approval',
         );
     }
 
