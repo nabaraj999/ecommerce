@@ -4,6 +4,7 @@ use App\Http\Controllers\Frontend\GoogleLoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\UserController;
+use App\Http\Controllers\OrderController;
 use App\Models\Company;
 use App\Models\Order;
 
@@ -45,6 +46,12 @@ Route::get("/detail/{record}", function($record){
 // Cart Update
 Route::post('/cart/update', [UserController::class, 'update'])->name('cart.update');
 
+// OrderRoute::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+});
 // 404 fallback
 Route::fallback(function (){
     return view('404');
