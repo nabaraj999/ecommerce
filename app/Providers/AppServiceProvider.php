@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Order;
 use App\Models\Vendor;
+use App\Observers\OrderObserver;
 use App\Observers\VendorObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -25,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Vendor::observe(VendorObserver::class);
+                Order::observe(OrderObserver::class);
+
     }
 }

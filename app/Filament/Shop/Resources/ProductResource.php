@@ -29,43 +29,53 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('vendor_id')
+           ->schema([
+    Forms\Components\TextInput::make('name')
+        ->required()
+        ->maxLength(255),
+    Forms\Components\TextInput::make('price')
+        ->required()
+        ->numeric()
+        ->prefix('$'),
+    Forms\Components\TextInput::make('discount')
+        ->required()
+        ->numeric()
+        ->default(0),
+    Forms\Components\Textarea::make('categories')
+        ->required()
+        ->columnSpanFull(),
+    Forms\Components\TextInput::make('brand')
+        ->required()
+        ->maxLength(255),
+    Forms\Components\FileUpload::make('images')
+        ->columnSpanFull()
+        ->multiple() // Allow multiple images
+        ->disk('public') // Specify storage disk
+        ->directory('product-images'), // Specify storage directory
+    Forms\Components\Textarea::make('description')
+        ->required()
+        ->columnSpanFull(),
+    Forms\Components\TextInput::make('qty')
+        ->required()
+        ->numeric(),
+    Forms\Components\Toggle::make('status')
+        ->required()
+        ->label('Product Status')
+        ->onColor('success') // Green when true (optional)
+        ->offColor('danger') // Red when false (optional)
+        ->inline(false) // Place label above toggle (optional)
+        ->default(true) // Default to true (optional)
+        ->formatStateUsing(function ($state) {
+            return (bool) $state; // Ensure boolean true/false
+        })
+        ->dehydrateStateUsing(function ($state) {
+            return (bool) $state; // Store as boolean in DB
+        }),
+      Forms\Components\TextInput::make('vendor_id')
                     ->required()
                     ->default(Auth::user()->id)
                     ->hidden(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('brand')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                     ->numeric()
-                   ->prefix('NRs.'),
-
-                Forms\Components\TextInput::make('qty')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('discount')
-                    ->required()
-                    ->numeric()
-                    ->suffix("%")
-                    ->default(0),
-                Forms\Components\TagsInput::make('categories')
-                    ->required(),
-
-
-                Forms\Components\RichEditor::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-
-                Forms\Components\FileUpload::make('images')
-                    ->required()
-                    ->multiple(),
-
-            ]);
+]);
     }
 
     public static function table(Table $table): Table

@@ -1,6 +1,6 @@
 @props(['product'])
 
-<a href="{{route('product', $product->id)}}" class="group block bg-white rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100">
+<a href="{{route('product.show', $product->id)}}" class="group block bg-white rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100">
 
     <!-- Product Image Container -->
     <div class="relative overflow-hidden bg-gray-50">

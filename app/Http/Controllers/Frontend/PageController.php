@@ -24,7 +24,7 @@ class PageController extends BaseController
                          ->get();
 
         // Create empty advertisements collection for now
-        $advertises = collect();
+        //$advertises = collect();
 
         // Get latest 15 products
         $latestProducts = Product::with('vendor')
@@ -34,7 +34,7 @@ class PageController extends BaseController
                                 ->limit(15)
                                 ->get();
 
-        return view('frontend.home', compact("vendors", "advertises", "latestProducts"));
+        return view('frontend.home', compact("vendors",  "latestProducts"));
     }
 
     public function vendor_request(Request $request)

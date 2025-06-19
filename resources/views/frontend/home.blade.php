@@ -64,7 +64,9 @@
             filter: brightness(1.1);
         }
     </style>
+ {{-- {{$advertises}} --}}
 
+    {{-- Hero Section --}}
     {{-- Featured Advertisement Section (Top Banner) --}}
     <div class="container py-10">
             <div class="space-y-4">
@@ -84,7 +86,7 @@
                 <div class="text-center py-8">
                     <p class="text-gray-500">No featured advertisements available at the moment.</p>
                 </div>
-        
+
         </div>
     </section>
 
