@@ -19,10 +19,7 @@ class OrderObserver
      */
     public function updated(Order $order): void
     {
-        if ($order->isDirty('status') && $order->status === 'processing') {
-           $order->qty -= $order->qty; // Reduce the quantity of the product
-           $order->saveQuietly(); // Save the updated order
-        }
+
     }
 
     /**
