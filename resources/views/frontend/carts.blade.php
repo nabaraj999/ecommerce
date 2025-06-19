@@ -34,6 +34,8 @@
         .border-primary { border-color: var(--primary-color); }
         .hover\:bg-primary:hover { background-color: var(--primary-color); }
         .hover\:bg-green-700:hover { background-color: #006600; }
+        .disabled\:bg-gray-300 { background-color: #d1d5db; }
+        .disabled\:cursor-not-allowed { cursor: not-allowed; }
     </style>
 
     {{-- Header Section --}}
@@ -95,6 +97,7 @@
                                             <th class="px-6 py-4 text-center text-sm font-bold text-ancient uppercase tracking-wider">Price</th>
                                             <th class="px-6 py-4 text-center text-sm font-bold text-ancient uppercase tracking-wider">Quantity</th>
                                             <th class="px-6 py-4 text-center text-sm font-bold text-ancient uppercase tracking-wider">Total</th>
+                                            <th class="px-6 py-4 text-center text-sm font-bold text-ancient uppercase tracking-wider">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-100">
@@ -136,16 +139,33 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-6 text-center">
-                                                    <div class="flex items-center justify-center">
+                                                    <div class="flex items-center justify-center space-x-2">
+                                                        <button class="bg-gray-200 hover:bg-gray-300 text-ancient px-3 py-1 rounded-full font-bold text-lg disabled:bg-gray-300 disabled:cursor-not-allowed decrease-qty"
+                                                                data-cart-id="{{ $cart->id }}"
+                                                                data-product-id="{{ $cart->product_id }}"
+                                                                {{ $cart->qty <= 1 ? 'disabled' : '' }}>
+                                                            -
+                                                        </button>
                                                         <span class="bg-primary text-white px-4 py-2 rounded-full font-bold text-lg min-w-[3rem]">
                                                             {{ $cart->qty }}
                                                         </span>
+                                                        <button class="bg-gray-200 hover:bg-gray-300 text-ancient px-3 py-1 rounded-full font-bold text-lg increase-qty"
+                                                                data-cart-id="{{ $cart->id }}"
+                                                                data-product-id="{{ $cart->product_id }}">
+                                                            +
+                                                        </button>
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-6 text-center">
                                                     <div class="text-xl font-bold text-ancient">
                                                         Rs. {{ number_format($cart->amount, 2) }}
                                                     </div>
+                                                </td>
+                                                <td class="px-6 py-6 text-center">
+                                                    <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full font-semibold remove-item"
+                                                            data-cart-id="{{ $cart->id }}">
+                                                        Remove
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -238,4 +258,69 @@
             @endif
         </div>
     </section>
+
+    {{-- JavaScript for Handling Quantity Updates and Item Removal --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const increaseButtons = document.querySelectorAll('.increase-qty');
+            const decreaseButtons = document.querySelectorAll('.decrease-qty');
+            const removeButtons = document.querySelectorAll('.remove-item');
+
+            // Function to update cart
+            function updateCart(cartId, productId, qty, action) {
+                fetch('{{ route('cart.update') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({ cart_id: cartId, product_id: productId, qty: qty, action: action }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload(); // Reload page to reflect changes
+                    } else {
+                        alert(data.message || 'Error updating cart');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            }
+
+            // Increase quantity
+            increaseButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const cartId = this.getAttribute('data-cart-id');
+                    const productId = this.getAttribute('data-product-id');
+                    const currentQty = parseInt(this.previousElementSibling.textContent.trim());
+                    updateCart(cartId, productId, currentQty + 1, 'update');
+                });
+            });
+
+            // Decrease quantity
+            decreaseButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const cartId = this.getAttribute('data-cart-id');
+                    const productId = this.getAttribute('data-product-id');
+                    const currentQty = parseInt(this.nextElementSibling.textContent.trim());
+                    if (currentQty > 1) {
+                        updateCart(cartId, productId, currentQty - 1, 'update');
+                    }
+                });
+            });
+
+            // Remove item
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (confirm('Are you sure you want to remove this item from your cart?')) {
+                        const cartId = this.getAttribute('data-cart-id');
+                        updateCart(cartId, null, 0, 'remove');
+                    }
+                });
+            });
+        });
+    </script>
 </x-frontend-layout>

@@ -39,7 +39,6 @@ class UserController extends BaseController
         return redirect()->back();
     }
 
-
     public function carts()
     {
         // Step 1: Get user's carts with product and vendor
@@ -64,6 +63,35 @@ class UserController extends BaseController
         return view('frontend.carts', compact('vendors', 'groupedCarts'));
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'cart_id' => 'required|exists:carts,id',
+            'product_id' => 'nullable|exists:products,id',
+            'qty' => 'required|integer|min:0',
+            'action' => 'required|in:update,remove',
+        ]);
+
+        $cart = Cart::where('id', $request->cart_id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
+
+        if ($request->action === 'remove') {
+            $cart->delete();
+            return response()->json(['success' => true, 'message' => 'Item removed from cart']);
+        }
+
+        if ($request->qty < 1) {
+            return response()->json(['success' => false, 'message' => 'Quantity must be at least 1']);
+        }
+
+        $product = Product::findOrFail($request->product_id);
+        $cart->qty = $request->qty;
+        $cart->amount = $product->price * $request->qty;
+        $cart->save();
+
+        return response()->json(['success' => true, 'message' => 'Cart updated successfully']);
+    }
 
     public function checkout($id)
     {
@@ -133,7 +161,7 @@ class UserController extends BaseController
 
             return redirect($response['payment_url']);
         }
-         Mail::to($vendor)->send(new OrderNotification($order));
+        Mail::to($vendor)->send(new OrderNotification($order));
         return redirect()->back();
     }
 
