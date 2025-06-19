@@ -35,20 +35,56 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
+        /* Advertisement Specific Styles */
+        .advertisement-banner {
+            position: relative;
+            overflow: hidden;
+        }
+        .advertisement-banner::before {
+            content: 'Ad';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .advertisement-sidebar img,
+        .advertisement-footer img {
+            transition: all 0.3s ease;
+        }
+        .advertisement-sidebar:hover img,
+        .advertisement-footer:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
     </style>
 
-    {{-- Hero Section --}}
-    <section class="bg-gradient-to-br from-green-600 to-green-500 text-white">
-        <div class="container mx-auto px-4 py-20 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">
-                Discover Local Flavors
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Find the best restaurants and stores in your neighborhood. Connect with local businesses and explore amazing food experiences.
-            </p>
-            <a href="#featured" class="bg-secondary text-ancient px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 inline-block shadow-lg">
-                Explore Now
-            </a>
+    {{-- Featured Advertisement Section (Top Banner) --}}
+    <div class="container py-10">
+            <div class="space-y-4">
+                @foreach ($advertises as $advertise)
+                    @if ($advertise->ad_position == 'featured')
+                        <div>
+                            <a href="{{ $advertise->redirect_url }}" target="_blank">
+                                <img class="w-full h-[120px] object-cover"
+                                    src="{{ asset(Storage::url($advertise->image)) }}" alt="">
+                            </a>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+            <div>
+
+                <div class="text-center py-8">
+                    <p class="text-gray-500">No featured advertisements available at the moment.</p>
+                </div>
+        
         </div>
     </section>
 
@@ -184,49 +220,32 @@
                     </div>
                 @endforelse
             </div>
-{{-- Replace the "View All Products Button" section in your home.blade.php with this --}}
 
-{{-- View All Products Button (Updated to use proper products route) --}}
-@if($latestProducts->count() > 0)
-    <div class="text-center mt-12">
-        <a href="{{ route('products.index') }}"
-           class="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-green-700 transform hover:scale-105 transition-all duration-300 inline-flex items-center shadow-lg">
-            <span>View All Products</span>
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-        </a>
-    </div>
-@endif
+            {{-- View All Products Button --}}
+            @if($latestProducts->count() > 0)
+                <div class="text-center mt-12">
+                    <a href="{{ route('products.index') }}"
+                       class="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-green-700 transform hover:scale-105 transition-all duration-300 inline-flex items-center shadow-lg">
+                        <span>View All Products</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
-
-    {{-- Advertisement Section (placeholder for future implementation) --}}
-    @if($advertises->count() > 0)
-    <section class="py-12 bg-gradient-to-r from-gray-50 to-white">
-        <div class="container mx-auto px-4">
-            {{-- Advertisement sections would go here --}}
-            <div class="text-center py-8">
-                <p class="text-gray-500">Advertisement sections will be displayed here</p>
-            </div>
-        </div>
-    </section>
-    @endif
 
     {{-- Featured Restaurants Section --}}
-    <section id="featured" class="py-16 bg-gray-50">
+    <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-primary mb-4">Featured Restaurants & Stores</h2>
-                <p class="text-lg text-paragraph max-w-2xl mx-auto">
-                    Discover the nearest and most popular restaurants and stores in your location.
-                    Quality food and services just around the corner.
-                </p>
+            <div class="mb-12">
+                <h2 class="text-4xl font-bold text-primary mb-4">Featured Restaurant/Store</h2>
+                <p class="text-lg text-paragraph">The nearest restaurant/store to your location</p>
             </div>
 
-            {{-- Vendor Grid Section --}}
             <div class="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                @forelse ($vendors as $vendor)
+                @foreach ($vendors as $vendor)
                     <div class="shadow-md hover:shadow-lg shadow-gray-400 rounded-lg overflow-hidden duration-300">
                         <a href="{{ route('shop', $vendor->id) }}" class="block">
                             <img class="w-full h-[200px] object-cover"
@@ -242,152 +261,181 @@
                             </div>
                         </a>
                     </div>
-                @empty
-                    <div class="col-span-full text-center py-12">
-                        <div class="text-gray-400 mb-4">
-                            <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No Vendors Available</h3>
-                        <p class="text-gray-500">Check back later for new restaurants and stores.</p>
-                    </div>
-                @endforelse
+                @endforeach
             </div>
         </div>
     </section>
 
     {{-- Vendor Registration Section --}}
     <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-bold text-ancient mb-6">
-                        List Your Restaurant or Store with
-                        <span class="text-primary">Floor Digital Pvt. Ltd.</span>
-                    </h2>
-                    <p class="text-xl text-paragraph mb-4">
-                        Reach <span class="font-bold text-primary">1,00,000+</span> new customers and grow your business
-                    </p>
-                    <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    {{-- Image Section --}}
-                    <div class="order-2 lg:order-1">
-                        <div class="relative">
-                            <img src="https://www.gemgovregistration.com/images/vendor-registration-services.jpg"
-                                 alt="Vendor Registration"
-                                 class="w-full rounded-2xl shadow-2xl">
-                            <div class="absolute -bottom-4 -right-4 bg-secondary text-ancient p-4 rounded-xl shadow-lg">
-                                <div class="font-bold text-lg">Join Today!</div>
-                                <div class="text-sm">Quick & Easy Setup</div>
+        <div class="w-[66%] m-auto text-center">
+            {{-- Form Advertisement Section (Above Registration Form) --}}
+            <div class="advertisement-section mb-8">
+                @if($advertises && $advertises->count() > 0)
+                    @foreach ($advertises as $advertise)
+                        @if ($advertise->ad_position == 'form')
+                            <div class="advertisement-banner mb-4">
+                                <a href="{{ $advertise->redirect_url }}" target="_blank"
+                                   class="block transform hover:scale-105 transition-transform duration-300">
+                                    <img class="w-full h-[120px] object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                                         src="{{ asset(Storage::url($advertise->image)) }}"
+                                         alt="{{ $advertise->company_name ?? 'Advertisement' }}">
+                                </a>
                             </div>
+                        @endif
+                    @endforeach
+                @else
+                    <div class="text-center py-4">
+                        <p class="text-gray-500 text-sm">No form advertisements available.</p>
+                    </div>
+                @endif
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-bold text-ancient mb-8">
+                List your Restaurant or Store at
+                <span class="text-primary">Floor Digital Pvt. Ltd.</span>!
+                <br>
+                Reach <span class="text-primary">1,00,000+</span> new customers.
+            </h1>
+
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <div class="relative">
+                        <img src="https://www.gemgovregistration.com/images/vendor-registration-services.jpg"
+                             alt="Vendor Registration"
+                             class="w-full rounded-2xl shadow-2xl">
+                        <div class="absolute -bottom-4 -right-4 bg-secondary text-ancient p-4 rounded-xl shadow-lg">
+                            <div class="font-bold text-lg">Join Today!</div>
+                            <div class="text-sm">Quick & Easy Setup</div>
                         </div>
                     </div>
+                </div>
 
-                    {{-- Form Section --}}
-                    <div class="order-1 lg:order-2">
-                        <div class="bg-gray-50 p-8 rounded-2xl shadow-xl">
-                            <h3 class="text-2xl font-bold text-ancient mb-6 text-center">Get Started Today</h3>
+                <div>
+                    <div class="bg-gray-50 p-8 rounded-2xl shadow-xl">
+                        <h3 class="text-2xl font-bold text-ancient mb-6 text-center">Get Started Today</h3>
 
-                            <form action="{{ route('vendor_request') }}" method="post" class="space-y-6">
-                                @csrf
+                        <form action="{{ route('vendor_request') }}" method="post" class="space-y-6">
+                            @csrf
 
-                                <div>
-                                    <label for="name" class="block text-sm font-semibold text-ancient mb-2">
-                                        Shop Name *
-                                    </label>
-                                    <input type="text"
-                                           name="name"
-                                           id="name"
-                                           class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('name') border-red-500 @enderror"
-                                           placeholder="Enter your shop name"
-                                           value="{{ old('name') }}">
-                                    @error('name')
-                                        <p class="text-red-500 text-sm mt-2 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                            </svg>
-                                            {{ $message }}
-                                        </p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="email" class="block text-sm font-semibold text-ancient mb-2">
-                                        Email Address *
-                                    </label>
-                                    <input type="email"
-                                           name="email"
-                                           id="email"
-                                           class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('email') border-red-500 @enderror"
-                                           placeholder="your@email.com"
-                                           value="{{ old('email') }}">
-                                    @error('email')
-                                        <p class="text-red-500 text-sm mt-2 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                            </svg>
-                                            {{ $message }}
-                                        </p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="contact_no" class="block text-sm font-semibold text-ancient mb-2">
-                                        Contact Number *
-                                    </label>
-                                    <input type="tel"
-                                           name="contact_no"
-                                           id="contact_no"
-                                           class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('contact_no') border-red-500 @enderror"
-                                           placeholder="+977 98xxxxxxxx"
-                                           value="{{ old('contact_no') }}">
-                                    @error('contact_no')
-                                        <p class="text-red-500 text-sm mt-2 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                            </svg>
-                                            {{ $message }}
-                                        </p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="address" class="block text-sm font-semibold text-ancient mb-2">
-                                        Business Address *
-                                    </label>
-                                    <input type="text"
-                                           name="address"
-                                           id="address"
-                                           class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('address') border-red-500 @enderror"
-                                           placeholder="Enter your business address"
-                                           value="{{ old('address') }}">
-                                    @error('address')
-                                        <p class="text-red-500 text-sm mt-2 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                            </svg>
-                                            {{ $message }}
-                                        </p>
-                                    @enderror
-                                </div>
-
-                                <div class="pt-4">
-                                    <button type="submit"
-                                            class="w-full bg-primary text-white py-4 px-6 rounded-lg font-bold text-lg hover:bg-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            <div class="text-left">
+                                <label for="name" class="block text-sm font-semibold text-ancient mb-2">
+                                    Enter Your Shop Name *
+                                </label>
+                                <input type="text"
+                                       name="name"
+                                       id="name"
+                                       class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('name') border-red-500 @enderror"
+                                       placeholder="Enter your shop name"
+                                       value="{{ old('name') }}">
+                                @error('name')
+                                    <p class="text-red-500 text-sm mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                                         </svg>
-                                        Send Request
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div class="text-left">
+                                <label for="email" class="block text-sm font-semibold text-ancient mb-2">
+                                    Enter Your Email *
+                                </label>
+                                <input type="email"
+                                       name="email"
+                                       id="email"
+                                       class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('email') border-red-500 @enderror"
+                                       placeholder="your@email.com"
+                                       value="{{ old('email') }}">
+                                @error('email')
+                                    <p class="text-red-500 text-sm mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div class="text-left">
+                                <label for="contact_no" class="block text-sm font-semibold text-ancient mb-2">
+                                    Enter Your Contact Number *
+                                </label>
+                                <input type="tel"
+                                       name="contact_no"
+                                       id="contact_no"
+                                       class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('contact_no') border-red-500 @enderror"
+                                       placeholder="+977 98xxxxxxxx"
+                                       value="{{ old('contact_no') }}">
+                                @error('contact_no')
+                                    <p class="text-red-500 text-sm mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div class="text-left">
+                                <label for="address" class="block text-sm font-semibold text-ancient mb-2">
+                                    Enter Your Address *
+                                </label>
+                                <input type="text"
+                                       name="address"
+                                       id="address"
+                                       class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors duration-300 @error('address') border-red-500 @enderror"
+                                       placeholder="Enter your business address"
+                                       value="{{ old('address') }}">
+                                @error('address')
+                                    <p class="text-red-500 text-sm mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit"
+                                        class="w-full bg-primary text-white py-4 px-6 rounded-lg font-bold text-lg hover:bg-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                    </svg>
+                                    Send Request
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    {{-- Sidebar Advertisement Section (Between Sections) --}}
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            @if($advertises && $advertises->count() > 0)
+                <div class="flex flex-wrap gap-4 justify-center">
+                    @foreach ($advertises as $advertise)
+                        @if ($advertise->ad_position == 'sidebar')
+                            <div class="advertisement-sidebar flex-1 min-w-[300px] max-w-[400px]">
+                                <a href="{{ $advertise->redirect_url }}" target="_blank"
+                                   class="block transform hover:scale-105 transition-transform duration-300">
+                                    <img class="w-full h-[100px] object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                                         src="{{ asset(Storage::url($advertise->image)) }}"
+                                         alt="{{ $advertise->company_name ?? 'Sidebar Advertisement' }}">
+                                </a>
+                                <div class="text-center mt-2">
+                                    <p class="text-xs text-gray-500">{{ $advertise->company_name }}</p>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
 
@@ -433,14 +481,33 @@
         </div>
     </section>
 
-    {{-- Call to Action Footer --}}
-    <section class="py-16 bg-primary text-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-4">Ready to Grow Your Business?</h2>
-            <p class="text-xl mb-8 opacity-90">Join thousands of successful restaurants and stores on our platform</p>
-            <a href="#vendor-form" class="bg-secondary text-ancient px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 inline-block shadow-lg">
-                Get Started Today
-            </a>
+    {{-- Footer Advertisement Section --}}
+    <section class="py-8 bg-gray-100">
+        <div class="container mx-auto px-4">
+            @if($advertises && $advertises->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach ($advertises as $advertise)
+                        @if ($advertise->ad_position == 'footer')
+                            <div class="advertisement-footer">
+                                <a href="{{ $advertise->redirect_url }}" target="_blank"
+                                   class="block transform hover:scale-105 transition-transform duration-300">
+                                    <img class="w-full h-[80px] object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                                         src="{{ asset(Storage::url($advertise->image)) }}"
+                                         alt="{{ $advertise->company_name ?? 'Footer Advertisement' }}">
+                                </a>
+                                <div class="text-center mt-2">
+                                    <h4 class="text-sm font-semibold text-gray-700">{{ $advertise->company_name }}</h4>
+                                    <p class="text-xs text-gray-500">{{ $advertise->contact }}</p>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-4">
+                    <p class="text-gray-500 text-sm">Partner with us to advertise your business!</p>
+                </div>
+            @endif
         </div>
     </section>
 
