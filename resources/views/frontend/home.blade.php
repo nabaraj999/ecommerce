@@ -228,7 +228,7 @@
             <div class="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                 @forelse ($vendors as $vendor)
                     <div class="shadow-md hover:shadow-lg shadow-gray-400 rounded-lg overflow-hidden duration-300">
-                        <a href="{{ route('shop', $vendor->id) }}" class="block">
+                        <a href="{{ route('product', $vendor->id) }}" class="block">
                             <img class="w-full h-[200px] object-cover"
                                  src="{{ asset(Storage::url($vendor->profile)) }}"
                                  alt="{{ $vendor->name }}">

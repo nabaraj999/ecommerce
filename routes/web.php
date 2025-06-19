@@ -20,6 +20,7 @@ Route::get("/product/{id}", [PageController::class, 'product'])->name('product.s
 
 Route::get("/products", [PageController::class, 'products'])->name('products.index');
 Route::get("/shop/{id}",[PageController::class,'shop'])->name('shop');
+Route::get("/product/{id}", [PageController::class, 'product'])->name('product');
 Route::get("/compare", [PageController::class, 'compare'])->name('compare');
 
 // Authenticated routes
