@@ -122,29 +122,32 @@
                         </div>
                     </div>
 
-                    <!-- Enhanced Pricing Section -->
-                    <div class="product-price space-y-2">
-                        @if ($product->discount > 0)
-                            <div class="flex items-center gap-4">
-                                <span class="text-3xl font-bold text-purple-600">
-                                    NRs.{{ number_format($product->price - ($product->price * $product->discount) / 100) }}
-                                </span>
-                                <span class="text-xl text-red-500 line-through">
-                                    NRs.{{ number_format($product->price) }}
-                                </span>
-                                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-bold">
-                                    {{ $product->discount }}% OFF
-                                </span>
-                            </div>
-                            <p class="text-green-600 font-medium">
-                                You save NRs.{{ number_format(($product->price * $product->discount) / 100) }}
-                            </p>
-                        @else
-                            <div class="text-3xl font-bold text-purple-600">
-                                NRs.{{ number_format($product->price) }}
-                            </div>
-                        @endif
-                    </div>
+                   <!-- Enhanced Pricing Section -->
+<div class="product-price space-y-2">
+    @if ($product->discount > 0)
+        @php
+            $discountedPrice = $product->price - $product->discount;
+        @endphp
+        <div class="flex items-center gap-4">
+            <span class="text-3xl font-bold text-purple-600">
+                NRs.{{ number_format($discountedPrice) }}
+            </span>
+            <span class="text-xl text-red-500 line-through">
+                NRs.{{ number_format($product->price) }}
+            </span>
+            <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-bold">
+                Save NRs.{{ number_format($product->discount) }}
+            </span>
+        </div>
+        <p class="text-green-600 font-medium">
+            You save NRs.{{ number_format($product->discount) }}
+        </p>
+    @else
+        <div class="text-3xl font-bold text-purple-600">
+            NRs.{{ number_format($product->price) }}
+        </div>
+    @endif
+</div>
 
                     <div class="purchase-info space-y-4 pt-4 border-t border-gray-100">
                         <!-- Quantity Selector -->
@@ -279,7 +282,7 @@
                                     <i class="fas fa-shipping-fast text-2xl"></i>
                                 </div>
                                 <p class="text-sm font-semibold text-gray-700">Free Shipping</p>
-                                <p class="text-xs text-gray-500">On orders over $50</p>
+                                <p class="text-xs text-gray-500">On orders over NPR 50</p>
                             </div>
                             <div class="space-y-3">
                                 <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-sky-100 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-lg">

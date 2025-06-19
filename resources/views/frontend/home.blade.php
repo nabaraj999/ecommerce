@@ -74,7 +74,7 @@
                     @if ($advertise->ad_position == 'featured')
                         <div>
                             <a href="{{ $advertise->redirect_url }}" target="_blank">
-                                <img class="w-full h-[120px] object-cover"
+                                <img class="w-full h-[220px] object-cover"
                                     src="{{ asset(Storage::url($advertise->image)) }}" alt="">
                             </a>
                         </div>
