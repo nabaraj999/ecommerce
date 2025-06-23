@@ -4,7 +4,7 @@ use App\Http\Controllers\Frontend\GoogleLoginController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\OrderController;
-
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 // Redirect /home to home route
@@ -37,6 +37,11 @@ Route::middleware(['auth'])->group(function () {
 // Google login routes
 Route::get('/google/redirect', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
+
+Route::get("/detail/{record}", function ($record) {
+    $order = Order::find($record);
+    return view('order_details', compact('order'));
+})->name('detail');
 
 // 404 fallback
 Route::fallback(function () {

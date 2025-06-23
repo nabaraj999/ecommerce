@@ -1,4 +1,4 @@
-@section('content')
+<x-frontend-layout>
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6">Order Details</h1>
         @if (session('error'))
@@ -38,4 +38,4 @@
             Back to Orders
         </a>
     </div>
-@endsection
+</x-frontend-layout>

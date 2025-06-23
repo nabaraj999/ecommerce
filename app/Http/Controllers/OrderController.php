@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Frontend\BaseController;
+use App\Models\Cart;
+use App\Models\Company;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class OrderController extends Controller
+class OrderController extends BaseController
 {
     /**
      * Create a new controller instance.
@@ -27,15 +31,16 @@ class OrderController extends Controller
     public function index()
     {
         try {
-            $user = Auth::user();
+            $user = User::find(Auth::user()->id);
             if (!$user) {
                 Log::error('No authenticated user found for /orders');
                 return redirect()->route('login')->with('error', 'Please log in to view your orders.');
             }
 
             $orders = $user->orders()->with('orderDescriptions.product')->latest()->paginate(10);
-            $carts = $user->carts()->get(); // Fetch carts for header
-            return view('orders.index', compact('orders', 'carts'));
+            $carts = $user->carts()->get();
+            $company = Company::first() ?? new Company(['logo' => '']);
+            return view('orders.index', compact('orders', 'carts', 'company'));
         } catch (\Exception $e) {
             Log::error('Error in OrderController::index: ' . $e->getMessage());
             return redirect()->route('home')->with('error', 'An error occurred while fetching your orders.');
@@ -51,15 +56,18 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            $user = Auth::user();
+            $user = User::find(Auth::user()->id);
             if (!$user) {
                 Log::error('No authenticated user found for /orders/{id}');
                 return redirect()->route('login')->with('error', 'Please log in to view your order.');
             }
-
-            $order = $user->orders()->with(['orderDescriptions.product', 'vendor', 'availableAddress'])->findOrFail($id);
-            $carts = $user->carts()->get(); // Fetch carts for header
-            return view('orders.show', compact('order', 'carts'));
+//   return $user;
+           // $order = $user->orders()->with(['orderDescriptions.product', 'vendor', 'availableAddress'])->findOrFail($id);
+$order =$user->orders()->find($id);
+// return $order;
+            $carts = $user->carts()->get();
+            $company = Company::first() ?? new Company(['logo' => '']);
+            return view('orders.show', compact('order', 'carts', 'company'));
         } catch (\Exception $e) {
             Log::error('Error in OrderController::show: ' . $e->getMessage());
             return redirect()->route('orders.index')->with('error', 'An error occurred while fetching the order details.');
