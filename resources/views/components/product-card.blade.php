@@ -6,14 +6,17 @@
     <div class="relative overflow-hidden bg-gray-50">
         <img
             class="w-full h-48 sm:h-40 lg:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-            src="{{ asset(Storage::url($product->images[0])) }}"
+            src="{{ isset($product->images[0]) ? asset(Storage::url($product->images[0])) : asset('images/no-image.png') }}"
             alt="{{ $product->name }}"
         >
 
         <!-- Discount Badge -->
-        @if ($product->discount > 0)
+        @if ($product->discount > 0 && $product->price > 0)
+            @php
+                $discountPercentage = round(($product->discount / $product->price) * 100);
+            @endphp
             <div class="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
-                {{ $product->discount }}% OFF
+               {{ $discountPercentage }}% OFF
             </div>
         @endif
 
@@ -43,7 +46,7 @@
                     <!-- Discounted Price Layout -->
                     <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-lg font-bold text-purple-600">
-                            NRs.{{ number_format($product->price - ($product->price * $product->discount) / 100) }}
+                            NRs.{{ number_format($product->price - $product->discount) }}
                         </span>
                         <span class="text-sm line-through text-red-500 font-medium">
                             NRs.{{ number_format($product->price) }}
@@ -51,7 +54,7 @@
                     </div>
                     <!-- Savings Amount -->
                     <p class="text-xs text-green-600 font-medium">
-                        Save NRs.{{ number_format(($product->price * $product->discount) / 100) }}
+                        Save NRs.{{ number_format($product->discount) }}
                     </p>
                 @else
                     <!-- Regular Price -->

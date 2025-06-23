@@ -22,7 +22,11 @@ class Order extends Model
     {
         return $this->belongsTo(AvailableAddress::class);
     }
-
+    
+public function orderDescriptions()
+{
+    return $this->hasMany(OrderDescription::class);
+}
     public function order_descriptions(): HasMany
     {
         return $this->hasMany(OrderDescription::class);

@@ -8,3 +8,4 @@ class Advertise extends Model
 {
     //
 }
+    

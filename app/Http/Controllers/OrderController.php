@@ -13,10 +13,10 @@ class OrderController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth'); // Apply auth middleware to all methods
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth'); // Apply auth middleware to all methods
+    // }
 
     /**
      * Display a listing of the user's orders.
@@ -32,7 +32,7 @@ class OrderController extends Controller
     /**
      * Display the specified order details.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\View\View
      */
     public function show($id)
