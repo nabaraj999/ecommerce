@@ -17,7 +17,7 @@
                         <input
                             class="flex-1 px-4 py-3 text-gray-700 placeholder-gray-400 border-none outline-none focus:ring-0 text-sm"
                             type="text"
-                            name="Search and compare products by name..."
+                            name="search"
                             placeholder="Search and compare products by name..."
                             autocomplete="off">
 
@@ -102,7 +102,7 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5.4M7 13v8a2 2 0 002 2h10a2 2 0 002-2v-8m-9 4h6"></path>
                             </svg>
-                            @if(count($carts) > 0)
+                            @if(isset($carts) && count($carts) > 0)
                                 <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold animate-pulse">
                                     {{ count($carts) > 9 ? '9+' : count($carts) }}
                                 </span>
