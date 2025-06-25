@@ -469,3 +469,10 @@
         window.addEventListener('resize', slideImage);
     </script>
 </x-frontend-layout>
+
+
+
+
+<x-frontend-footer>
+
+</x-frontend-footer>

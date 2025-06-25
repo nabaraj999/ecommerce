@@ -39,3 +39,6 @@
         </a>
     </div>
 </x-frontend-layout>
+<x-frontend-footer>
+
+</x-frontend-footer>

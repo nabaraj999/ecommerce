@@ -130,3 +130,9 @@
         </div>
     </section>
 </x-frontend-layout>
+
+
+
+<x-frontend-footer>
+
+</x-frontend-footer>

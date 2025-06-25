@@ -175,14 +175,10 @@
         </div>
     </section>
 
-    {{-- Back to Home CTA --}}
-    <section class="py-16 bg-primary text-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-4">Discover More</h2>
-            <p class="text-xl mb-8 opacity-90">Explore our vendors and find amazing local businesses</p>
-            <a href="{{ route('home') }}" class="bg-secondary text-ancient px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transform hover:scale-105 transition-all duration-300 inline-block shadow-lg">
-                Browse Vendors
-            </a>
-        </div>
-    </section>
+ 
 </x-frontend-layout>
+
+
+<x-frontend-footer>
+
+</x-frontend-footer>

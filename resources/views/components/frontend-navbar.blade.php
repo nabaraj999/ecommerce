@@ -1,14 +1,15 @@
 <header class="bg-[var(--primary-color)] shadow-lg sticky top-0 z-50 transition-all duration-300">
     <nav class="container mx-auto px-4 py-3 sm:py-4">
-        <div class="flex items-center justify-between">
-            <!-- Logo Section -->
-            <div class="flex-shrink-0">
-                <a href="{{ route('home') }}" class="block transition-transform hover:scale-105">
-                    <img class="h-8 sm:h-10 w-auto object-contain"
-                         src="{{ asset(Storage::url($company->logo)) }}"
-                         alt="Company Logo">
-                </a>
-            </div>
+      <div class="flex items-center justify-between">
+    <!-- Logo Section -->
+    <div class="flex-shrink-0">
+        <a href="{{ route('home') }}" class="block transition-transform hover:scale-105">
+            <img class="h-12 sm:h-20 w-auto object-contain"
+                 src="{{ asset(Storage::url($company->logo)) }}"
+                 alt="Company Logo">
+        </a>
+    </div>
+
 
             <!-- Desktop Navigation -->
             <div class="hidden lg:flex items-center gap-6 flex-1 max-w-4xl mx-6">
