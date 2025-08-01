@@ -143,7 +143,8 @@
                                        name="address_note"
                                        id="address_note"
                                        placeholder="e.g., Near the red gate, 2nd floor, ring the bell twice"
-                                       class="w-full px-4 py-4 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-300">
+                                       class="w-full px-4 py-4 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-300"
+                                        required>
                                 <p class="text-sm text-gray-500 mt-2">Help our delivery person find you easily</p>
                             </div>
 
